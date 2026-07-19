@@ -1,0 +1,23 @@
+# Backups (kept locally only, never pushed)
+data.backup*/
+*.bak
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# Secrets / local env
+.env
+*.env
+.env.local
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+
+# WorkBuddy project memory (never commit)
+.workbuddy/

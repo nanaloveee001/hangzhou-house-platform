@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>杭州房价深度分析系统</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- 示例数据横幅：is_sample 时由 JS 显示 -->
+  <div id="sampleBanner" class="sample-banner" hidden>
+    ⚠️ 当前加载的是<strong>示例数据（非真实市场数据）</strong>。请替换为你的真实 <code>house_price.json</code> / <code>school_district.json</code> / <code>block_info.json</code>，平台将自动切换为真实模式。
+  </div>
+
+  <header class="app-header">
+    <div class="app-header__brand">
+      <span class="app-header__logo">🍯</span>
+      <h1 class="app-header__title">杭州房价深度分析系统</h1>
+    </div>
+    <nav class="app-header__nav" aria-label="主导航">
+      <div class="app-search">
+        <input id="searchInput" class="app-search__input" type="search"
+               placeholder="搜索学校 / 小区名称…" aria-label="搜索" />
+      </div>
+      <div class="app-filter" id="filterGroup" role="group" aria-label="地图筛选模式">
+        <button class="app-filter__btn is-active" data-mode="all">全部</button>
+        <button class="app-filter__btn" data-mode="school">仅学区</button>
+        <button class="app-filter__btn" data-mode="low">低价房源</button>
+        <button class="app-filter__btn" data-mode="block">板块边界</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="app-main">
+    <!-- 左侧地图区域 -->
+    <section class="map-pane" aria-label="地图区域">
+      <div id="map" class="map-pane__canvas"></div>
+      <div class="map-legend" id="heatLegend" aria-label="房价热力图例">
+        <span class="map-legend__title">房价热力（元/㎡）</span>
+        <div class="map-legend__scale"></div>
+        <div class="map-legend__labels"><span>&lt;3万</span><span>4万</span><span>5万</span><span>6万</span><span>&gt;6万</span></div>
+      </div>
+      <button class="map-drawer-toggle" id="drawerToggle" aria-label="展开面板">↑ 面板</button>
+    </section>
+
+    <!-- 右侧面板区域 -->
+    <aside class="panel-pane" id="panelPane" aria-label="分析面板">
+      <div class="panel-tabs" role="tablist">
+        <button class="panel-tabs__btn is-active" data-tab="overview" role="tab">概览</button>
+        <button class="panel-tabs__btn" data-tab="school" role="tab">学区</button>
+        <button class="panel-tabs__btn" data-tab="compare" role="tab">板块对比</button>
+        <button class="panel-tabs__btn" data-tab="facility" role="tab">配套</button>
+      </div>
+
+      <!-- 概览 -->
+      <section class="panel-section is-active" data-panel="overview">
+        <h2 class="panel-section__title">区域房价概览</h2>
+        <div id="chartDistrictBar" class="chart-box"></div>
+        <div id="chartTrend" class="chart-box"></div>
+        <div id="chartCityTrend" class="chart-box"></div>
+        <div class="panel-note">热力图色阶见左下角图例；颜色由低到高：浅绿→青→蓝→橙→红。「官方房价指数」图来自国家统计局 70 城指数（真实数据），与上方示例均价走势相互独立。</div>
+      </section>
+
+      <!-- 学区 -->
+      <section class="panel-section" data-panel="school" hidden>
+        <h2 class="panel-section__title">学区分析</h2>
+        <div class="school-filter">
+          <select id="schoolType" class="school-filter__select" aria-label="办学层次">
+            <option value="all">全部层次</option>
+            <option value="小学">小学</option>
+            <option value="初中">初中</option>
+            <option value="高中">高中</option>
+          </select>
+          <select id="schoolLevel" class="school-filter__select" aria-label="学校等级">
+            <option value="all">全部等级</option>
+            <option value="省重点">省重点</option>
+            <option value="市重点">市重点</option>
+            <option value="普通">普通</option>
+          </select>
+          <select id="schoolDistrict" class="school-filter__select" aria-label="行政区">
+            <option value="all">全部行政区</option>
+          </select>
+        </div>
+        <div id="schoolList" class="school-list"></div>
+        <div class="policy-card" id="policyCard">
+          <h3 class="policy-card__title">2026 年杭州市区义务教育阶段招生政策（摘要）</h3>
+          <ul class="policy-card__list">
+            <li>公办小学按户籍划片入学</li>
+            <li>民办初中实行"公民同招" + 电脑派位</li>
+            <li>分配生比例提升至 70%</li>
+            <li>落户年限：部分热门学校需满 3 年</li>
+            <li>多校划片试点范围扩大</li>
+          </ul>
+          <p class="policy-card__meta">来源：杭州市教育局官网 · 更新：2026-03-15（示例，待官方源补全）</p>
+        </div>
+      </section>
+
+      <!-- 板块对比 -->
+      <section class="panel-section" data-panel="compare" hidden>
+        <h2 class="panel-section__title">板块对比分析</h2>
+        <div id="chartRadar" class="chart-box"></div>
+        <div id="chartBlockBar" class="chart-box"></div>
+        <table class="rank-table" id="rankTable">
+          <thead><tr><th>板块</th><th>均价</th><th>环比</th><th>在售</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <!-- 配套 -->
+      <section class="panel-section" data-panel="facility" hidden>
+        <h2 class="panel-section__title">配套评估</h2>
+        <div id="chartFacility" class="chart-box"></div>
+        <table class="rank-table" id="facilityTable">
+          <thead><tr><th>板块</th><th>交通</th><th>商业</th><th>医疗</th><th>教育</th><th>生态</th><th>综合</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div class="panel-note">评分权重：交通30% / 商业25% / 医疗20% / 教育15% / 生态10%（5 分制，基于周边配套数量与质量）。</div>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="app-footer">
+    <span>数据来源：国家统计局70城指数（官方真实）· OpenStreetMap（学校POI真实）· 高德POI（爬虫预取）· 用户真实数据 · 政府开放平台</span>
+    <span class="app-footer__meta">最后更新：2026-07-19 · 仅供研究参考，不构成投资建议</span>
+  </footer>
+
+  <!-- 依赖 -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+
+  <!-- 应用模块（ES6 module） -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

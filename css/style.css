@@ -1,0 +1,194 @@
+/* ============================================================
+   杭州房价深度分析系统 — 样式表
+   规范：5.1 配色 / 5.4 字体 / 4.2 响应式 / BEM 命名
+   ============================================================ */
+
+:root {
+  --color-primary: #1A73E8;     /* Google Blue 主色 */
+  --color-success: #34A853;     /* 低价/推荐 */
+  --color-danger:  #EA4335;     /* 高价/警告 */
+  --color-info:    #FBBC04;     /* 中等/学区 */
+  --color-bg:      #F8F9FA;     /* 背景 */
+  --color-card:    #FFFFFF;     /* 卡片 */
+  --color-text:    #202124;     /* 正文 */
+  --color-title:   #1A1A1A;     /* 标题 */
+  --color-border:  #DADCE0;     /* 边框 */
+  --font-base: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-num: "Roboto Mono", "Consolas", monospace;
+  --shadow-card: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+body {
+  font-family: var(--font-base);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text);
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ---------- 示例数据横幅 ---------- */
+.sample-banner {
+  background: #FFF8E1;
+  color: #7A5B00;
+  border-bottom: 1px solid var(--color-info);
+  padding: 8px 16px;
+  font-size: 13px;
+  text-align: center;
+}
+.sample-banner code { background: #fff; padding: 1px 5px; border-radius: 3px; }
+
+/* ---------- Header ---------- */
+.app-header {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+  padding: 10px 20px;
+  background: var(--color-primary);
+  color: #fff;
+  box-shadow: var(--shadow-card);
+  z-index: 1000;
+}
+.app-header__brand { display: flex; align-items: center; gap: 10px; }
+.app-header__logo { font-size: 22px; }
+.app-header__title { font-size: 20px; font-weight: 700; color: #fff; }
+.app-header__nav { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+.app-search__input {
+  height: 36px; width: 240px; max-width: 50vw;
+  padding: 0 12px; border: none; border-radius: 18px;
+  font-size: 14px; outline: none;
+}
+.app-filter { display: flex; gap: 6px; }
+.app-filter__btn {
+  height: 34px; padding: 0 14px; border: 1px solid rgba(255,255,255,.5);
+  border-radius: 17px; background: transparent; color: #fff;
+  font-size: 13px; cursor: pointer; transition: .2s;
+}
+.app-filter__btn:hover { background: rgba(255,255,255,.15); }
+.app-filter__btn.is-active { background: #fff; color: var(--color-primary); font-weight: 600; }
+
+/* ---------- Main ---------- */
+.app-main { flex: 1; display: flex; min-height: 0; }
+
+.map-pane { position: relative; width: 60%; height: 100%; }
+.map-pane__canvas { width: 100%; height: 100%; background: #eaf0f5; }
+
+.map-legend {
+  position: absolute; left: 12px; bottom: 12px; z-index: 500;
+  background: rgba(255,255,255,.95); padding: 8px 12px; border-radius: 8px;
+  box-shadow: var(--shadow-card); font-size: 12px; width: 200px;
+}
+.map-legend__title { font-weight: 600; display: block; margin-bottom: 6px; }
+.map-legend__scale {
+  height: 10px; border-radius: 5px;
+  background: linear-gradient(90deg,#95E1D3,#4ECDC4,#45B7D1,#FF8C00,#FF0000);
+}
+.map-legend__labels { display: flex; justify-content: space-between; margin-top: 4px; color: #5f6368; }
+
+.map-drawer-toggle {
+  display: none; position: absolute; right: 12px; bottom: 12px; z-index: 500;
+  background: var(--color-primary); color: #fff; border: none;
+  padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 13px;
+}
+
+/* ---------- Panel ---------- */
+.panel-pane {
+  width: 40%; height: 100%; background: var(--color-bg);
+  border-left: 1px solid var(--color-border);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.panel-tabs { display: flex; border-bottom: 1px solid var(--color-border); background: var(--color-card); }
+.panel-tabs__btn {
+  flex: 1; padding: 12px 0; border: none; background: transparent;
+  font-size: 14px; cursor: pointer; color: #5f6368; border-bottom: 2px solid transparent;
+}
+.panel-tabs__btn.is-active { color: var(--color-primary); font-weight: 600; border-bottom-color: var(--color-primary); }
+
+.panel-section { padding: 16px 18px; overflow-y: auto; flex: 1; }
+.panel-section[hidden] { display: none; }
+.panel-section__title { font-size: 18px; font-weight: 600; color: var(--color-title); margin-bottom: 12px; }
+.panel-note { font-size: 12px; color: #80868b; margin-top: 10px; line-height: 1.5; }
+
+.chart-box { width: 100%; height: 300px; background: var(--color-card); border-radius: 10px;
+  box-shadow: var(--shadow-card); margin-bottom: 14px; padding: 6px; }
+
+/* ---------- 学区 ---------- */
+.school-filter { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.school-filter__select {
+  flex: 1; min-width: 110px; height: 36px; padding: 0 8px;
+  border: 1px solid var(--color-border); border-radius: 8px; font-size: 13px; background: #fff;
+}
+.school-list { display: flex; flex-direction: column; gap: 10px; }
+.school-card {
+  background: var(--color-card); border-radius: 10px; padding: 12px 14px;
+  box-shadow: var(--shadow-card); border-left: 4px solid var(--color-success);
+}
+.school-card__head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.school-card__name { font-size: 16px; font-weight: 600; color: var(--color-title); }
+.school-card__badge { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: var(--color-info); color: #7A5B00; white-space: nowrap; }
+.school-card__meta { font-size: 13px; color: #5f6368; margin: 6px 0; }
+.school-card__price { font-family: var(--font-num); color: var(--color-danger); font-weight: 600; }
+.school-card__actions { display: flex; gap: 8px; margin-top: 8px; }
+.school-card__btn {
+  flex: 1; text-align: center; padding: 6px 0; border: 1px solid var(--color-border);
+  border-radius: 6px; font-size: 12px; cursor: pointer; background: #fff; color: var(--color-primary); text-decoration: none;
+}
+.school-card__btn:hover { background: var(--color-bg); }
+
+.policy-card { background: var(--color-card); border-radius: 10px; padding: 14px; box-shadow: var(--shadow-card); margin-top: 14px; }
+.policy-card__title { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+.policy-card__list { padding-left: 18px; font-size: 13px; color: #3c4043; }
+.policy-card__list li { margin: 4px 0; }
+.policy-card__meta { font-size: 12px; color: #80868b; margin-top: 10px; }
+
+/* ---------- 表格 ---------- */
+.rank-table { width: 100%; border-collapse: collapse; background: var(--color-card);
+  border-radius: 10px; overflow: hidden; box-shadow: var(--shadow-card); font-size: 13px; }
+.rank-table th, .rank-table td { padding: 9px 10px; text-align: left; border-bottom: 1px solid var(--color-border); }
+.rank-table th { background: #f1f3f4; font-weight: 600; color: #3c4043; }
+.rank-table td { font-family: var(--font-num); }
+.rank-table tr:last-child td { border-bottom: none; }
+
+/* ---------- 弹窗 ---------- */
+.popup { font-size: 13px; line-height: 1.6; min-width: 220px; }
+.popup__title { font-size: 16px; font-weight: 700; color: var(--color-title); margin-bottom: 6px; }
+.popup__row { display: flex; gap: 6px; }
+.popup__label { color: #80868b; }
+.popup__price { font-family: var(--font-num); color: var(--color-danger); font-weight: 700; }
+.popup__btn { display: inline-block; margin-top: 8px; padding: 5px 12px; background: var(--color-primary);
+  color: #fff; border-radius: 6px; text-decoration: none; font-size: 12px; }
+
+/* ---------- Footer ---------- */
+.app-footer {
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  padding: 8px 20px; background: var(--color-card); border-top: 1px solid var(--color-border);
+  font-size: 12px; color: #80868b;
+}
+.app-footer__meta { font-family: var(--font-num); }
+
+/* ---------- 响应式：平板 ---------- */
+@media (max-width: 1023px) {
+  .map-pane { width: 50%; }
+  .panel-pane { width: 50%; }
+  .app-header__title { font-size: 18px; }
+}
+
+/* ---------- 响应式：手机 ---------- */
+@media (max-width: 767px) {
+  body { overflow: auto; }
+  .app-main { flex-direction: column; }
+  .map-pane { width: 100%; height: 55vh; }
+  .panel-pane {
+    width: 100%; height: auto; border-left: none; border-top: 1px solid var(--color-border);
+    position: fixed; left: 0; right: 0; bottom: 0; top: 55vh; transform: translateY(100%);
+    transition: transform .3s ease; z-index: 1200; box-shadow: 0 -4px 16px rgba(0,0,0,.15);
+  }
+  .panel-pane.is-open { transform: translateY(0); }
+  .map-drawer-toggle { display: block; }
+  .app-search__input { width: 160px; }
+}
