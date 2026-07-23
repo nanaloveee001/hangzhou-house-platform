@@ -21,3 +21,9 @@ Thumbs.db
 
 # WorkBuddy project memory (never commit)
 .workbuddy/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
