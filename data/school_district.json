@@ -3,7 +3,7 @@
     "source": "高德 Web 服务 API（真实开放数据，合规）",
     "is_sample": false,
     "note": "学校名称/坐标为真实高德数据；学区划分/等级/对口/政策待教育局源补全。",
-    "update_time": "2026-09-11"
+    "update_time": "2026-09-12"
   },
   "schools": [
     {
@@ -2132,6 +2132,23 @@
       "policy_update": ""
     },
     {
+      "school_id": "AMAP/B0FFFQJIMI",
+      "school_name": "萧山区任伯年小学",
+      "school_type": "小学",
+      "school_level": "待补全",
+      "district": "萧山区",
+      "block": "待补全",
+      "address": "瓜沥镇航坞路503号",
+      "latitude": 30.173545,
+      "longitude": 120.451046,
+      "official_website": "",
+      "feeder_communities": [],
+      "feeder_schools": [],
+      "admission_policy": "待补全",
+      "policy_source": "待补全",
+      "policy_update": ""
+    },
+    {
       "school_id": "AMAP/B0KULDF0TJ",
       "school_name": "杭州市临平区临平第三小学(昌达校区)",
       "school_type": "小学",
@@ -2532,40 +2549,6 @@
       "address": "兴国支路22号",
       "latitude": 30.421407,
       "longitude": 120.266611,
-      "official_website": "",
-      "feeder_communities": [],
-      "feeder_schools": [],
-      "admission_policy": "待补全",
-      "policy_source": "待补全",
-      "policy_update": ""
-    },
-    {
-      "school_id": "AMAP/B0FFIAXGE7",
-      "school_name": "采荷二小景和小学",
-      "school_type": "小学",
-      "school_level": "待补全",
-      "district": "上城区",
-      "block": "待补全",
-      "address": "景芳路东端",
-      "latitude": 30.268843,
-      "longitude": 120.218245,
-      "official_website": "",
-      "feeder_communities": [],
-      "feeder_schools": [],
-      "admission_policy": "待补全",
-      "policy_source": "待补全",
-      "policy_update": ""
-    },
-    {
-      "school_id": "AMAP/B023B05UPU",
-      "school_name": "翠苑第一小学(翠苑校区)",
-      "school_type": "小学",
-      "school_level": "待补全",
-      "district": "西湖区",
-      "block": "待补全",
-      "address": "文一路375号(翠柏路地铁站D口步行360米)",
-      "latitude": 30.28741,
-      "longitude": 120.126909,
       "official_website": "",
       "feeder_communities": [],
       "feeder_schools": [],
